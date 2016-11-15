@@ -10,6 +10,7 @@ services:
             - ../gameportal/:/var/www/gameportal
             - ../hub/:/var/www/hub
             - ../shaker/:/var/www/shaker
+            - ../sourcebreaker/:/var/www/sourcebreaker
 #            - ../sample/:/var/www/sample
 
 ### Workspace Utilities Container ###########################
