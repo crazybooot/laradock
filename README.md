@@ -1331,7 +1331,18 @@ It should be like this:
 
 <br>
 <a name="debugging"></a>
-### Debugging
+
+### PHPStorm
+Remote debug Laravel web and phpunit tests.
+
+####[Full Guide Here](https://github.com/LaraDock/laradock/blob/master/_guides/phpstorm.md)
+
+
+<br>
+<a name="Misc"></a>
+
+### Miscellaneous
+
 
 *Here's a list of the common problems you might face, and the possible solutions.*
 
@@ -1352,9 +1363,9 @@ Use `http://127.0.0.1` instead of `http://localhost` in your browser.
 
 
 
-#### I see an error message containing `address already in use`
+#### I see an error message containing `address already in use` or `port is already allocated`
 
-Make sure the ports for the services that you are trying to run (80, 3306, etc.) are not being used already by other programs, such as a built in `apache`/`httpd` service or other development tools you have installed.
+Make sure the ports for the services that you are trying to run (22, 80, 443, 3306, etc.) are not being used already by other programs on the host, such as a built in `apache`/`httpd` service or other development tools you have installed.
 
 
 

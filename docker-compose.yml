@@ -79,6 +79,7 @@ services:
             - applications
         volumes:
             - ./logs/nginx/:/var/log/nginx
+            - ./nginx/sites/:/etc/nginx/sites-available
         ports:
             - "80:80"
             - "443:443"
@@ -116,17 +117,18 @@ services:
 ### MySQL Container #########################################
 
     mysql:
-        build: ./mysql
+        build: 
+            context: ./mysql
+            args:
+                - MYSQL_DATABASE=homestead
+                - MYSQL_USER=homestead
+                - MYSQL_PASSWORD=secret
+                - MYSQL_ROOT_PASSWORD=root
         volumes:
             - mysql:/var/lib/mysql
             - ../share/:/var/share
         ports:
             - "3306:3306"
-        environment:
-            MYSQL_DATABASE: homestead
-            MYSQL_USER: homestead
-            MYSQL_PASSWORD: secret
-            MYSQL_ROOT_PASSWORD: root
 
 ### MariaDB Container #######################################
 
