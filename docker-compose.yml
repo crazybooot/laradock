@@ -21,7 +21,7 @@ services:
             context: ./workspace
             args:
                 - INSTALL_XDEBUG=true
-                - INSTALL_MONGO=true
+                - INSTALL_MONGO=false
                 - INSTALL_NODE=true
                 - INSTALL_YARN=true
                 - INSTALL_DRUSH=false
@@ -32,7 +32,7 @@ services:
                 - PGID=1000
                 - NODE_VERSION=stable
                 - TZ=UTC
-            dockerfile: Dockerfile-70
+            dockerfile: Dockerfile-71
         volumes_from:
             - applications
         extra_hosts:
