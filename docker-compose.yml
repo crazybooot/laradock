@@ -26,6 +26,7 @@ services:
                 - INSTALL_YARN=true
                 - INSTALL_DRUSH=false
                 - INSTALL_AEROSPIKE_EXTENSION=false
+                - INSTALL_V8JS_EXTENSION=false
                 - COMPOSER_GLOBAL_INSTALL=true
                 - INSTALL_WORKSPACE_SSH=true
                 - PUID=1000
