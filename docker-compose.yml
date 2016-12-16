@@ -32,6 +32,7 @@ services:
                 - PUID=1000
                 - PGID=1000
                 - NODE_VERSION=stable
+                - YARN_VERSION=latest
                 - TZ=UTC
             dockerfile: Dockerfile-71
         volumes_from:
@@ -50,6 +51,7 @@ services:
             context: ./php-fpm
             args:
                 - INSTALL_XDEBUG=true
+                - INSTALL_SOAP=false
                 - INSTALL_MONGO=true
                 - INSTALL_ZIP_ARCHIVE=true
                 - INSTALL_MEMCACHED=true
