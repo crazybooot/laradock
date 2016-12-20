@@ -21,7 +21,7 @@ services:
             context: ./workspace
             args:
                 - INSTALL_XDEBUG=true
-                - INSTALL_MONGO=false
+                - INSTALL_MONGO=true
                 - INSTALL_NODE=true
                 - INSTALL_YARN=true
                 - INSTALL_DRUSH=false
@@ -34,7 +34,7 @@ services:
                 - NODE_VERSION=stable
                 - YARN_VERSION=latest
                 - TZ=UTC
-            dockerfile: Dockerfile-71
+            dockerfile: Dockerfile-70
         volumes_from:
             - applications
         extra_hosts:
@@ -58,7 +58,7 @@ services:
                 - INSTALL_OPCACHE=false
                 - INSTALL_AEROSPIKE_EXTENSION=false
                 - CODEIGNITER=false
-            dockerfile: Dockerfile-71
+            dockerfile: Dockerfile-70
         volumes_from:
             - applications
         expose:
