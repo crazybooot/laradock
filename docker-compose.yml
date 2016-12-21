@@ -34,7 +34,7 @@ services:
                 - NODE_VERSION=stable
                 - YARN_VERSION=latest
                 - TZ=UTC
-            dockerfile: Dockerfile-70
+            dockerfile: Dockerfile-71
         volumes_from:
             - applications
         extra_hosts:

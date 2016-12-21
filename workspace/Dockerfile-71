@@ -118,15 +118,15 @@ RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
 #####################################
 # MongoDB:
 #####################################
-
 # Check if Mongo needs to be installed
 ARG INSTALL_MONGO=false
 ENV INSTALL_MONGO ${INSTALL_MONGO}
 RUN if [ ${INSTALL_MONGO} = true ]; then \
     # Install the mongodb extension
-    pecl channel-update pecl.php.net && \
-    pecl install mongodb && \
-    echo "extension=mongodb.so" >> /etc/php/7.1/cli/conf.d/30-mongodb.ini \
+     apt-get install -y php-mongodb \
+#    pecl channel-update pecl.php.net && \
+#    pecl install mongodb && \
+#    echo "extension=mongodb.so" >> /etc/php/7.1/cli/conf.d/30-mongodb.ini \
 ;fi
 
 #####################################
