@@ -266,9 +266,6 @@ RUN if [ ${INSTALL_V8JS_EXTENSION} = true ]; then \
 # add ./vendor/bin to non-root user's bashrc (needed for phpunit)
 USER laradock
 
-# RUN echo "" >> ~/.bashrc && \
-#     echo 'export PATH="/var/www/vendor/bin:$PATH"' >> ~/.bashrc
-
 RUN echo "" >> ~/.bashrc && \
     echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc
 
