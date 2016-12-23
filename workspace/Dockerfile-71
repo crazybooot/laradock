@@ -82,6 +82,21 @@ USER root
 COPY ./crontab /var/spool/cron/crontabs
 
 #####################################
+# OH MY ZSH:
+#####################################
+USER root
+
+ARG INSTALL_OH_MY_ZSH_SHELL=false
+ENV INSTALL_OH_MY_ZSH_SHELL ${INSTALL_OH_MY_ZSH_SHELL}
+
+RUN if [ ${INSTALL_OH_MY_ZSH_SHELL} = true ]; then \
+    apt-get install -y zsh \
+    && git clone git://github.com/robbyrussell/oh-my-zsh.git /home/laradock/.oh-my-zsh \
+;fi
+
+COPY .zshrc /home/laradock/.zshrc
+
+#####################################
 # xDebug:
 #####################################
 
