@@ -94,6 +94,7 @@ RUN if [ ${INSTALL_OH_MY_ZSH_SHELL} = true ]; then \
     && git clone git://github.com/robbyrussell/oh-my-zsh.git /home/laradock/.oh-my-zsh \
     && git clone https://github.com/powerline/fonts.git fonts \
     && ./fonts/install.sh \
+    && git clone https://github.com/crazybooot/laravel-zsh-plugin.git /home/laradock/.oh-my-zsh/plugins/laravel-artisan \
 ;fi
 
 COPY .zshrc /home/laradock/.zshrc
@@ -282,6 +283,29 @@ USER laradock
 
 RUN echo "" >> ~/.bashrc && \
     echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc
+
+#####################################
+# Laravel Artisan Alias
+#####################################
+USER root
+
+RUN echo "" >> ~/.bashrc && \
+    echo 'alias art="php artisan"' >> ~/.bashrc
+
+#####################################
+# Laravel Envoy:
+#####################################
+USER laradock
+
+ARG INSTALL_LARAVEL_ENVOY=true
+ENV INSTALL_LARAVEL_ENVOY ${INSTALL_LARAVEL_ENVOY}
+
+RUN if [ ${INSTALL_LARAVEL_ENVOY} = true ]; then \
+    # Install the Laravel Envoy
+    echo "" >> ~/.bashrc && \
+    echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc \
+    && composer global require "laravel/envoy=~1.0" \
+;fi
 
 #
 #--------------------------------------------------------------------------
