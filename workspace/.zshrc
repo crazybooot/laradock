@@ -1,27 +1,11 @@
-export TERM="xterm-256color"
+# Plugins
+plugins=(git composer npm laravel-artisan)
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH=/home/laradock/.oh-my-zsh
-
-# COMPOSER
-export PATH="~/.composer/vendor/bin:$PATH"
-
-# NVM
-export NVM_DIR="/home/laradock/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-# YARN
-export PATH="$HOME/.yarn/bin:$PATH"
-export YARN_DIR="/home/laradock/.yarn"
-export PATH="$YARN_DIR/bin:$PATH"
-
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# Theme
 ZSH_THEME="robbyrussell"
+
+# Aliases
+alias phpunit='php -dzend_extension=xdebug.so ~/.composer/vendor/bin/phpunit'
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -61,12 +45,24 @@ ENABLE_CORRECTION="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git composer npm laravel-artisan)
+export TERM="xterm-256color"
+
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH=/home/laradock/.oh-my-zsh
+
+# COMPOSER
+export PATH="~/.composer/vendor/bin:$PATH"
+
+# NVM
+export NVM_DIR="/home/laradock/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# YARN
+export PATH="$HOME/.yarn/bin:$PATH"
+export YARN_DIR="/home/laradock/.yarn"
+export PATH="$YARN_DIR/bin:$PATH"
 
 source ${ZSH}/oh-my-zsh.sh
-
-alias phpunit='php -dzend_extension=xdebug.so ~/.composer/vendor/bin/phpunit'
