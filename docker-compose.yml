@@ -11,7 +11,7 @@ services:
             - ../hub/:/var/www/hub
             - ../shaker/:/var/www/shaker
             - ../sourcebreaker/:/var/www/sourcebreaker
-            - ../taker/:/var/www/taker
+            - ../taket/:/var/www/taket
             - ../share/:/var/www/share
             # - ../sample/:/var/www/sample
 
