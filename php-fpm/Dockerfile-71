@@ -38,18 +38,6 @@ MAINTAINER Vladimir Kirejko <kirejko@gmail.com>
 #
 
 #####################################
-# SOAP:
-#####################################
-
-ARG INSTALL_SOAP=false
-RUN if [ ${INSTALL_SOAP} = true ]; then \
-    # Install the soap extension
-    apt-get -y update && \
-    apt-get -y install libxml2-dev && \ 
-    docker-php-ext-install soap \
-;fi
-
-#####################################
 # xDebug:
 #####################################
 
@@ -57,9 +45,7 @@ ARG INSTALL_XDEBUG=false
 RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     # Install the xdebug extension
     pecl install xdebug && \
-    docker-php-ext-enable xdebug && \
-    docker-php-ext-install exif \
-
+    docker-php-ext-enable xdebug \
 ;fi
 
 # Copy xdebug configration for remote debugging
@@ -85,16 +71,6 @@ RUN if [ ${INSTALL_ZIP_ARCHIVE} = true ]; then \
     # Install the zip extension
     pecl install zip && \
     docker-php-ext-enable zip \
-;fi
-
-#####################################
-# bcmath:
-#####################################
-
-ARG INSTALL_BCMATH=false
-RUN if [ ${INSTALL_BCMATH} = true ]; then \
-    # Install the bcmath extension
-    docker-php-ext-install bcmath \
 ;fi
 
 #####################################
@@ -154,14 +130,46 @@ RUN if [ ${INSTALL_OPCACHE} = true ]; then \
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 #####################################
-# Codeigniter Modifications:
+# Mysqli Modifications:
+#####################################
+ARG INSTALL_MYSQLI=false
+RUN if [ ${INSTALL_MYSQLI} = true ]; then \
+     docker-php-ext-install mysqli \
+;fi
+
+#####################################
+# Tokenizer Modifications:
 #####################################
 
-ARG CODEIGNITER=false
-RUN if [ ${CODEIGNITER} = true ]; then \
-    # Install Codeigniter PHP extentions requirements
-     docker-php-ext-install mysqli && \
+ARG INSTALL_TOKENIZER=false
+RUN if [ ${INSTALL_TOKENIZER} = true ]; then \
      docker-php-ext-install tokenizer \
+;fi
+
+#####################################
+# Human Language and Character Encoding Support:
+#####################################
+
+ARG INTL=false
+RUN if [ ${INTL} = true ]; then \
+    # Install intl and requirements
+    apt-get install -y zlib1g-dev libicu-dev g++ && \
+    docker-php-ext-configure intl && \
+    docker-php-ext-install intl \
+;fi
+
+#####################################
+# GHOSTSCRIPT:
+#####################################
+
+ARG GHOSTSCRIPT=false
+RUN if [ ${GHOSTSCRIPT} = true ]; then \
+    # Install the ghostscript extension
+    # for PDF editing
+    apt-get -y update \
+    && apt-get install -y \
+    poppler-utils \
+    ghostscript \
 ;fi
 
 #
