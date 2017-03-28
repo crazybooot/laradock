@@ -10,7 +10,7 @@
 #    https://hub.docker.com/r/laradock/workspace/tags/
 #
 
-FROM alivecorpse/workspace:7.1
+FROM alivecorpse/workspace:latest
 
 MAINTAINER Vladimir Kirejko <kirejko@gmail.com>
 
