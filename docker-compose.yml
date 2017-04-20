@@ -7,14 +7,14 @@ services:
     applications:
         image: tianon/true
         volumes:
-            - ../gameportal/:/var/www/gameportal
-            - ../hub/:/var/www/hub
-            - ../shaker/:/var/www/shaker
-            - ../sourcebreaker/:/var/www/sourcebreaker
-            - ../taket/:/var/www/taket
-            - ../share/:/var/www/share
+            # - ../gameportal/:/var/www/gameportal
+            # - ../hub/:/var/www/hub
+            # - ../shaker/:/var/www/shaker
+            # - ../sourcebreaker/:/var/www/sourcebreaker
+            # - ../taket/:/var/www/taket
+            # - ../share/:/var/www/share
             # - ../sample/:/var/www/sample
-            # - ${APPLICATION}:/var/www
+            - ${APPLICATION}:/var/www
 
 ### Workspace Utilities Container ###########################
 
