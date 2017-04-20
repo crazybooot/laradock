@@ -2,7 +2,7 @@
 plugins=(git composer npm laravel-artisan)
 
 # Theme
-ZSH_THEME="robbyrussell"
+ZSH_THEME="agnoster"
 
 # Aliases
 alias phpunit='php -dzend_extension=xdebug.so ~/.composer/vendor/bin/phpunit'
