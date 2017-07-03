@@ -17,16 +17,19 @@ services:
         args:
           - INSTALL_OH_MY_ZSH_SHELL=${WORKSPACE_INSTALL_OH_MY_ZSH_SHELL}
           - INSTALL_XDEBUG=${WORKSPACE_INSTALL_XDEBUG}
+          - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
           - INSTALL_SOAP=${WORKSPACE_INSTALL_SOAP}
           - INSTALL_MONGO=${WORKSPACE_INSTALL_MONGO}
+          - INSTALL_MSSQL=${WORKSPACE_INSTALL_MSSQL}
           - INSTALL_NODE=${WORKSPACE_INSTALL_NODE}
           - INSTALL_YARN=${WORKSPACE_INSTALL_YARN}
           - INSTALL_DRUSH=${WORKSPACE_INSTALL_DRUSH}
-          - INSTALL_AEROSPIKE_EXTENSION=${WORKSPACE_INSTALL_AEROSPIKE_EXTENSION}
-          - INSTALL_V8JS_EXTENSION=${WORKSPACE_INSTALL_INSTALL_V8JS_EXTENSION}
+          - INSTALL_AEROSPIKE=${WORKSPACE_INSTALL_AEROSPIKE}
+          - INSTALL_V8JS=${WORKSPACE_INSTALL_V8JS}
           - COMPOSER_GLOBAL_INSTALL=${WORKSPACE_COMPOSER_GLOBAL_INSTALL}
           - INSTALL_WORKSPACE_SSH=${WORKSPACE_INSTALL_WORKSPACE_SSH}
           - INSTALL_LARAVEL_ENVOY=${WORKSPACE_INSTALL_LARAVEL_ENVOY}
+          - INSTALL_LARAVEL_INSTALLER=${WORKSPACE_INSTALL_LARAVEL_INSTALLER}
           - INSTALL_DEPLOYER=${WORKSPACE_INSTALL_DEPLOYER}
           - INSTALL_LINUXBREW=${WORKSPACE_INSTALL_LINUXBREW}
           - INSTALL_MC=${WORKSPACE_INSTALL_MC}
@@ -35,6 +38,8 @@ services:
           - NODE_VERSION=${WORKSPACE_NODE_VERSION}
           - YARN_VERSION=${WORKSPACE_YARN_VERSION}
           - TZ=${WORKSPACE_TIMEZONE}
+          - BLACKFIRE_CLIENT_ID=${BLACKFIRE_CLIENT_ID}
+          - BLACKFIRE_CLIENT_TOKEN=${BLACKFIRE_CLIENT_TOKEN}
         dockerfile: "Dockerfile-${PHP_VERSION}"
       volumes_from:
         - applications
@@ -57,19 +62,23 @@ services:
         context: ./php-fpm
         args:
           - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
+          - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
           - INSTALL_SOAP=${PHP_FPM_INSTALL_SOAP}
           - INSTALL_MONGO=${PHP_FPM_INSTALL_MONGO}
+          - INSTALL_MSSQL=${PHP_FPM_INSTALL_MSSQL}
           - INSTALL_ZIP_ARCHIVE=${PHP_FPM_INSTALL_ZIP_ARCHIVE}
           - INSTALL_BCMATH=${PHP_FPM_INSTALL_BCMATH}
           - INSTALL_PHPREDIS=${PHP_FPM_INSTALL_PHPREDIS}
           - INSTALL_MEMCACHED=${PHP_FPM_INSTALL_MEMCACHED}
           - INSTALL_OPCACHE=${PHP_FPM_INSTALL_OPCACHE}
           - INSTALL_EXIF=${PHP_FPM_INSTALL_EXIF}
-          - INSTALL_AEROSPIKE_EXTENSION=${PHP_FPM_INSTALL_AEROSPIKE_EXTENSION}
+          - INSTALL_AEROSPIKE=${PHP_FPM_INSTALL_AEROSPIKE}
           - INSTALL_MYSQLI=${PHP_FPM_INSTALL_MYSQLI}
           - INSTALL_TOKENIZER=${PHP_FPM_INSTALL_TOKENIZER}
           - INSTALL_INTL=${PHP_FPM_INSTALL_INTL}
           - INSTALL_GHOSTSCRIPT=${PHP_FPM_INSTALL_GHOSTSCRIPT}
+          - INSTALL_LDAP=${PHP_FPM_INSTALL_LDAP}
+          - INSTALL_SWOOLE=${PHP_FPM_INSTALL_SWOOLE}
         dockerfile: "Dockerfile-${PHP_VERSION}"
       volumes_from:
         - applications
@@ -95,6 +104,8 @@ services:
         - applications
       depends_on:
         - workspace
+      extra_hosts:
+        - "dockerhost:${DOCKER_HOST_IP}"
       networks:
         - backend
 
@@ -117,6 +128,18 @@ services:
         - php-fpm
       networks:
         - frontend
+        - backend
+
+### Blackfire Container #################################
+
+    blackfire:
+      image: blackfire/blackfire
+      environment:
+        - BLACKFIRE_SERVER_ID=${BLACKFIRE_SERVER_ID}
+        - BLACKFIRE_SERVER_TOKEN=${BLACKFIRE_SERVER_TOKEN}
+      depends_on:
+        - php-fpm
+      networks:
         - backend
 
 ### Apache Server Container #################################
@@ -178,9 +201,11 @@ services:
         - MYSQL_USER=${MYSQL_USER}
         - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - TZ=${WORKSPACE_TIMEZONE}
       volumes:
         - ${DATA_SAVE_PATH}/mysql:/var/lib/mysql
         - ../share/:/var/share
+        - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       ports:
         - "${MYSQL_PORT}:3306"
       networks:
@@ -197,7 +222,8 @@ services:
         - MYSQL_PASSWORD=${PERCONA_PASSWORD}
         - MYSQL_ROOT_PASSWORD=${PERCONA_ROOT_PASSWORD}
       volumes:
-        - percona:/var/lib/mysql
+        - ${DATA_SAVE_PATH}/percona:/var/lib/mysql
+        - ./percona/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       ports:
         - "${PERCONA_PORT}:3306"
       networks:
@@ -225,6 +251,7 @@ services:
       build: ./mariadb
       volumes:
         - ${DATA_SAVE_PATH}/mariadb:/var/lib/mysql
+        - ./mariadb/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       ports:
         - "${MARIADB_PORT}:3306"
       environment:
@@ -284,7 +311,7 @@ services:
     mongo:
       build: ./mongo
       ports:
-        - "27017:27017"
+        - "${MONGODB_PORT}:27017"
       volumes:
         - ${DATA_SAVE_PATH}/mongo:/data/db
       networks:
@@ -295,7 +322,7 @@ services:
     rethinkdb:
       build: ./rethinkdb
       ports:
-        - "8090:8080"
+        - "${RETHINKDB_PORT}:8080"
       volumes:
         - ${DATA_SAVE_PATH}/rethinkdb:/data/rethinkdb_data
       networks:
@@ -321,10 +348,10 @@ services:
       volumes:
         - ${DATA_SAVE_PATH}/aerospike:/opt/aerospike/data
       ports:
-        - "3000:3000"
-        - "3001:3001"
-        - "3002:3002"
-        - "3003:3003"
+        - "${AEROSPIKE_SERVICE_PORT}:3000"
+        - "${AEROSPIKE_FABRIC_PORT}:3001"
+        - "${AEROSPIKE_HEARTBEAT_PORT}:3002"
+        - "${AEROSPIKE_INFO_PORT}:3003"
       networks:
         - backend
 
@@ -385,16 +412,15 @@ services:
 
     caddy:
       build: ./caddy
-      ports:
-        - "80:80"
-        - "443:443"
-        - "2015:2015"
       volumes_from:
         - applications
       volumes:
-        - ./caddy/Caddyfile:/etc/Caddyfile
-        - ./logs/caddy:/var/log/caddy
-        - caddy:/root/.caddy
+        - ${CADDY_CUSTOM_CADDYFILE}:/etc/Caddyfile
+        - ${CADDY_HOST_LOG_PATH}:/var/log/caddy
+        - ${DATA_SAVE_PATH}:/root/.caddy
+      ports:
+        - "${CADDY_HOST_HTTP_PORT}:80"
+        - "${CADDY_HOST_HTTPS_PORT}:443"
       depends_on:
         - php-fpm
       networks:
@@ -421,7 +447,10 @@ services:
 ### Adminer Container ####################################
 
     adminer:
-      build: ./adminer
+      build:
+        context: ./adminer
+        args:
+          - INSTALL_MSSQL=${ADM_INSTALL_MSSQL}
       ports:
         - "${ADM_PORT}:8080"
       depends_on:
@@ -440,6 +469,7 @@ services:
         - postgres
       networks:
         - frontend
+        - backend
 
 ### ElasticSearch Container #################################
 
@@ -453,6 +483,19 @@ services:
         - "${ELASTICSEARCH_HOST_TRANSPORT_PORT}:9300"
       depends_on:
         - php-fpm
+      networks:
+        - frontend
+        - backend
+
+
+### Kibana Container #######################################
+
+    kibana:
+      build: ./kibana
+      ports:
+        - "${KIBANA_HTTP_PORT}:5601"
+      depends_on:
+        - elasticsearch
       networks:
         - frontend
         - backend
@@ -480,6 +523,7 @@ services:
         - "8025:8025"
       networks:
         - frontend
+        - backend
 
 ### Selenium Container ########################################
 
@@ -543,6 +587,7 @@ services:
         - proxy2
 
 ### Jenkins ###################################################
+
     jenkins:
       build: ./jenkins
       environment:
@@ -554,6 +599,23 @@ services:
       volumes:
         - ${JENKINS_HOME}:/var/jenkins_home
         - /var/run/docker.sock:/var/run/docker.sock
+      networks:
+        - frontend
+        - backend
+
+### Laravel Echo Server #######################################
+    laravel-echo-server:
+      build:
+        context: ./laravel-echo-server
+      volumes:
+        - ./laravel-echo-server/laravel-echo-server.json:/app/laravel-echo-server.json:ro
+      ports:
+        - "${LARAVEL_ECHO_SERVER_PORT}:6001"
+      links:
+        - redis
+      networks:
+        - frontend
+        - backend
 
 ### Networks Setup ############################################
 
