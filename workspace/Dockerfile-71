@@ -140,6 +140,8 @@ RUN if [ ${INSTALL_OH_MY_ZSH_SHELL} = true ]; then \
     && ./fonts/install.sh \
     && git clone https://github.com/crazybooot/laravel-zsh-plugin.git \
         /home/laradock/.oh-my-zsh/plugins/laravel-artisan \
+    && git clone https://github.com/lukechilds/zsh-nvm \
+        /home/laradock/.oh-my-zsh/custom/plugins/zsh-nvm \
 ;fi
 
 COPY .zshrc /home/laradock/.zshrc

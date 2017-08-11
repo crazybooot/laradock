@@ -1,5 +1,5 @@
 # Plugins
-plugins=(git composer npm laravel-artisan)
+plugins=(git composer npm zsh-nvm laravel-artisan)
 
 # Theme
 ZSH_THEME="agnoster"
