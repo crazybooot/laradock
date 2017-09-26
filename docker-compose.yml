@@ -38,6 +38,7 @@ services:
           - INSTALL_PYTHON=${WORKSPACE_INSTALL_PYTHON}
           - INSTALL_IMAGE_OPTIMIZERS=${WORKSPACE_INSTALL_IMAGE_OPTIMIZERS}
           - INSTALL_IMAGEMAGICK=${WORKSPACE_INSTALL_IMAGEMAGICK}
+          - INSTALL_TERRAFORM=${WORKSPACE_INSTALL_TERRAFORM}
           - PUID=${WORKSPACE_PUID}
           - PGID=${WORKSPACE_PGID}
           - NODE_VERSION=${WORKSPACE_NODE_VERSION}
@@ -156,6 +157,7 @@ services:
         args:
           - PHP_UPSTREAM_CONTAINER=${APACHE_PHP_UPSTREAM_CONTAINER}
           - PHP_UPSTREAM_PORT=${APACHE_PHP_UPSTREAM_PORT}
+          - PHP_UPSTREAM_TIMEOUT=${APACHE_PHP_UPSTREAM_TIMEOUT}
       volumes_from:
         - applications
       volumes:
@@ -216,7 +218,6 @@ services:
         - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
       ports:
         - "${MYSQL_PORT}:3306"
-      user: "1000:50"
       networks:
         - backend
 
