@@ -526,6 +526,18 @@ RUN if [ ${INSTALL_TERRAFORM} = true ]; then \
 ;fi
 
 #####################################
+# pgsql client
+#####################################
+USER root
+ARG INSTALL_PG_CLIENT=false
+ENV INSTALL_PG_CLIENT ${INSTALL_PG_CLIENT}
+RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
+    # Install the pgsql clint
+    apt-get update -yqq && \
+    apt-get -y install postgresql-client \
+;fi
+
+#####################################
 # Dusk Dependencies:
 #####################################
 USER root
