@@ -65,4 +65,6 @@ export PATH="$HOME/.yarn/bin:$PATH"
 export YARN_DIR="/home/laradock/.yarn"
 export PATH="$YARN_DIR/bin:$PATH"
 
+export PHP_IDE_CONFIG="serverName=laradock"
+
 source ${ZSH}/oh-my-zsh.sh
