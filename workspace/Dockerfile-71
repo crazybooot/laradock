@@ -83,6 +83,18 @@ RUN if [ ${INSTALL_LDAP} = true ]; then \
 ;fi
 
 #####################################
+# IMAP:
+#####################################
+
+ARG INSTALL_IMAP=false
+ENV INSTALL_IMAP ${INSTALL_IMAP}
+
+RUN if [ ${INSTALL_IMAP} = true ]; then \
+    apt-get update -yqq && \
+    apt-get install -y php7.1-imap \
+;fi
+
+#####################################
 # Set Timezone
 #####################################
 
@@ -283,7 +295,7 @@ ENV INSTALL_NODE ${INSTALL_NODE}
 ENV NVM_DIR /home/laradock/.nvm
 RUN if [ ${INSTALL_NODE} = true ]; then \
     # Install nvm (A Node Version Manager)
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash && \
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash && \
         . $NVM_DIR/nvm.sh && \
         nvm install ${NODE_VERSION} && \
         nvm use ${NODE_VERSION} && \
@@ -579,7 +591,7 @@ ENV INSTALL_IMAGE_OPTIMIZERS ${INSTALL_IMAGE_OPTIMIZERS}
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
     apt-get install -y --force-yes jpegoptim optipng pngquant gifsicle \
 #    if [ ${INSTALL_NODE} = true ]; then \
-#        ~/.bashrc && npm install -g svgo \
+#        . ~/.bashrc && npm install -g svgo \
 #    ;fi \
 ;fi
 
