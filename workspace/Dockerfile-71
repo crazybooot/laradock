@@ -153,27 +153,6 @@ RUN echo "" >> ~/.bashrc && \
 	sed -i 's/^#! \/bin\/sh/#! \/bin\/bash/' /home/laradock/aliases.sh
 
 #####################################
-# OH MY ZSH:
-#####################################
-USER root
-
-ARG INSTALL_OH_MY_ZSH_SHELL=false
-ENV INSTALL_OH_MY_ZSH_SHELL ${INSTALL_OH_MY_ZSH_SHELL}
-
-RUN if [ ${INSTALL_OH_MY_ZSH_SHELL} = true ]; then \
-    apt-get install -y zsh \
-    && git clone git://github.com/robbyrussell/oh-my-zsh.git /home/laradock/.oh-my-zsh \
-    && git clone https://github.com/powerline/fonts.git fonts \
-    && ./fonts/install.sh \
-    && git clone https://github.com/crazybooot/laravel-zsh-plugin.git \
-        /home/laradock/.oh-my-zsh/plugins/laravel-artisan \
-    && git clone https://github.com/lukechilds/zsh-nvm \
-        /home/laradock/.oh-my-zsh/custom/plugins/zsh-nvm \
-;fi
-
-COPY .zshrc /home/laradock/.zshrc
-
-#####################################
 # xDebug:
 #####################################
 
@@ -235,7 +214,7 @@ ENV INSTALL_MONGO ${INSTALL_MONGO}
 RUN if [ ${INSTALL_MONGO} = true ]; then \
     # Install the mongodb extension
     # pecl channel-update pecl.php.net && \
-    pecl install mongodb && \
+    pecl -q install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.1/mods-available/mongodb.ini && \
     ln -s /etc/php/7.1/mods-available/mongodb.ini /etc/php/7.1/cli/conf.d/30-mongodb.ini \
 ;fi
@@ -676,6 +655,27 @@ RUN if [ ${INSTALL_DUSK_DEPS} = true ]; then \
   && mv chromedriver /usr/local/bin/ \
   && rm chromedriver_linux64.zip \
 ;fi
+
+#####################################
+# OH MY ZSH:
+#####################################
+USER root
+
+ARG INSTALL_OH_MY_ZSH_SHELL=false
+ENV INSTALL_OH_MY_ZSH_SHELL ${INSTALL_OH_MY_ZSH_SHELL}
+
+RUN if [ ${INSTALL_OH_MY_ZSH_SHELL} = true ]; then \
+    apt-get install -y zsh \
+    && git clone git://github.com/robbyrussell/oh-my-zsh.git /home/laradock/.oh-my-zsh \
+    && git clone https://github.com/powerline/fonts.git fonts \
+    && ./fonts/install.sh \
+    && git clone https://github.com/crazybooot/laravel-zsh-plugin.git \
+        /home/laradock/.oh-my-zsh/plugins/laravel-artisan \
+    && git clone https://github.com/lukechilds/zsh-nvm \
+        /home/laradock/.oh-my-zsh/custom/plugins/zsh-nvm \
+;fi
+
+COPY .zshrc /home/laradock/.zshrc
 
 #
 #--------------------------------------------------------------------------
