@@ -12,7 +12,8 @@
 # Note: Base Image name format {image-tag}-{php-version}
 #
 
-FROM alivecorpse/php-fpm:latest
+# FROM alivecorpse/php-fpm:latest
+FROM laradock/php-fpm:1.4-71
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
