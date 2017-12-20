@@ -561,8 +561,6 @@ RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
 #    ;fi \
 ;fi
 
-USER laradock
-
 #####################################
 # Symfony:
 #####################################
@@ -584,7 +582,7 @@ RUN if [ ${INSTALL_SYMFONY} = true ]; then \
 #####################################
 # PYTHON:
 #####################################
-
+USER root
 ARG INSTALL_PYTHON=false
 ENV INSTALL_PYTHON ${INSTALL_PYTHON}
 RUN if [ ${INSTALL_PYTHON} = true ]; then \
