@@ -13,6 +13,7 @@
 #
 
 FROM alivecorpse/workspace:latest
+# FROM laradock/workspace:1.9-71
 
 LABEL maintainer="Mahmoud Zalt <mahmoud@zalt.me>"
  
