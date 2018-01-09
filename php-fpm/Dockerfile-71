@@ -13,7 +13,7 @@
 #
 
 # FROM alivecorpse/php-fpm:latest
-FROM laradock/php-fpm:1.4-71
+FROM laradock/php-fpm:2.0-71
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
 
